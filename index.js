@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -21,10 +22,17 @@ app.get('/', (req, res) => {
   res.send('Employee Management System Backend is Running');
 });
 
+// ✅ Start server first so Render detects open port
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
+// 🔁 Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB Connected');
-    app.listen(PORT, () => console.log('Server running on http://localhost:' + PORT));
   })
-  .catch(err => console.error(err));
+  .catch((err) => {
+    console.error('MongoDB Connection Error:', err);
+  });
